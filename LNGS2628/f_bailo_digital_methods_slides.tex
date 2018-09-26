@@ -1,0 +1,841 @@
+\documentclass[serif, aspectratio=169]{beamer}
+
+\usetheme{metropolis}
+
+% Define title
+\newcommand{\doctitle}{LNGS2628}
+\newcommand{\docsubtitle}{Digital tools for the
+humanities}% Remove if not needed
+
+% Define author
+\newcommand{\docauthor}{Francesco Bailo}
+% \newcommand{\docauthortitle}{PhD Student}
+\newcommand{\docauthorinstitute}{The University of Sydney}
+\newcommand{\docauthoremail}{francesco.bailo@sydney.edu.au}
+\newcommand{\InstitutePlace}{Institue and place}
+
+% Define subject and keywords
+\newcommand{\docsubject}{ADD SUBJECT HERE}
+\newcommand{\dockeywords}{Keywords;}
+
+% Define creation date (format D:YYYYMMDDHHmmss)
+\newcommand{\doccreationdate}{D:201809031900}
+
+\input{/Users/francesco/tex_inputs/biblatex_apa}
+\input{/Users/francesco/tex_inputs/default_slides_set}
+
+
+% Beamer buttons
+
+\setbeamertemplate{button}{\tikz
+  \node[
+  inner xsep=4pt,
+  draw=structure!80,
+  fill=structure!50,
+  rounded corners=4pt]  {\tiny\insertbuttontext};}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\doctitle \\ \docsubtitle} % Article title
+
+\author{
+\large
+\textsc{Francesco Bailo}\\[2mm] 
+\normalsize The University of Sydney \\
+% \normalsize \href{mailto:\docauthoremail}{\docauthoremail} 
+% \vspace{-5mm}
+}
+
+\titlegraphic{\includegraphics[height=0.5cm]{/Users/francesco/Dropbox/Thesis_PhD/figure/Usyd_logo.png}}
+
+\date{5 September 2018}
+
+\usepackage[titletoc]{appendix}
+\usepackage{graphicx}
+\usepackage{media9}
+
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+%	HEADER AND FOOTER SECTION
+%----------------------------------------------------------------------------------------
+
+\setbeamertemplate{headline}{%
+\leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.125ex]{palette quaternary}%
+    \insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll}
+    \end{beamercolorbox}%
+  }
+}
+
+
+\setbeamertemplate{footline}[text line]{%
+  \parbox{\linewidth}{\vspace*{-8pt}\href{mailto:\docauthoremail}{\docauthoremail}\hfill\insertpagenumber/\insertpresentationendpage
+}}
+
+%----------------------------------------------------------------------------------------
+
+\newcommand{\customcite}[1]{\citeauthor{#1}, \citetitle{#1}, \citeyear{#1}}
+
+
+\usepackage{newverbs}
+\newverbcommand{\bverb}
+  {\begin{lrbox}{\verbbox}}
+  {\end{lrbox}\colorbox{gray!30}{\box\verbbox}}
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{} 
+\setbeamertemplate{footline}{} 
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\frame{\tableofcontents}
+
+\section{Network analysis}
+
+\subsection{A very short introduction}
+
+\begin{frame}
+
+\textbf{Why to think about networks?}
+
+Let's think about a group of interesting research subjects (e.g. people, documents, states, organisations, tweets). We have at least two approaches:
+
+\begin{enumerate}
+
+\item We can study each \textit{component} (e.g. person, document, state, organisation, tweet) of our group as a separate individual;
+
+\item We can study the group as a \textbf{system}, focusing on the \textbf{relations} between components and on the \textbf{role} played by each component \textit{within} the system.
+
+\end{enumerate}
+
+Network analysis is not a \textit{theory} but an \textit{holistic} and \textit{relational} approach to research in multiple disciplines (in fact, it is discipline-neutral).  
+
+\end{frame}
+
+\begin{frame}
+
+\begin{columns}
+\begin{column}{0.8\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/the_internet}
+\end{figure}
+\end{column}
+\begin{column}{0.2\textwidth}
+\begin{figure}
+\caption{The Internet in 2003, each node represents groups of computers and each connection the route used by data packages (Credits: The Opte Project)}
+\end{figure}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{columns}
+\begin{column}{0.8\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/bruns}
+\end{figure}
+\end{column}
+\begin{column}{0.2\textwidth}
+\begin{figure}
+\caption{The Australian Twitter sphere where each node represents a user and links their interconnections (Credit: Axel Bruns / QUT Digital Media Research Centre)}
+\end{figure}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.55\textwidth]{figure/race_network}
+\caption{Friendship network at a US high school \autocite[221]{newman_networks_2010}.}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{columns}
+\begin{column}{0.8\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/network_nyt}
+\end{figure}
+\end{column}
+\begin{column}{0.2\textwidth}
+\begin{figure}
+\caption{Network with positive and negative edges between ``entities'' mentioned in the NYT (US presidential election data: January to August 2004) \autocite{sudhahar_network_2015}.}
+\end{figure}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{How do we formally represent networks?}
+
+\begin{columns}
+\begin{column}{0.6\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/undirected_network}
+\caption{Traditional visualisation of two small networks...}
+\end{figure}
+\end{column}
+\begin{column}{0.4\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/undirected_adj_matrix}
+\caption{... and the adjacency matrix of the left-hand network \autocite[111]{newman_networks_2010}.}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{How do we formally represent networks?}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.7\textwidth]{figure/directed_network}
+\caption{A directed network...}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/directed_adj_matrix}
+\caption{... and its adjacency matrix (not symmetric!) \autocite[112]{newman_networks_2010}.}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{What can I use network analysis for?}
+
+\begin{itemize}
+
+\item Understand the \textbf{role} that nodes play within the network: for example a node can be central, peripheral, a broker connecting different parts of the network or relatively ``influential'' if it is connected with many other nodes. 
+
+\item Understand the \textbf{structure} of the overall network: for example, we would expect a social network to be structurally very different from a network of followers/followees on a social media website.
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/social_network}
+\caption{A friendship network of highschool students}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+    \centering
+    \includegraphics{figure/twitter_net}
+\caption{Followers and followees on Twitter}
+\end{figure}
+\end{column}
+\end{columns}
+ 
+\end{frame}
+
+
+
+\subsection{Tools}
+
+\begin{frame}
+\frametitle{Tools}
+
+\centering \textbf{Easy, small n}: Gephi (\url{gephi.org})
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.65\textwidth]{figure/gephi.jpg}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Tools}
+
+\centering \textbf{Hard, big n} igraph package (\url{igraph.org}) in R (\url{www.r-project.org}) or Python (\url{www.python.org})
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{figure/igraph}
+\end{figure}
+
+\end{frame}
+
+\subsection{Resources}
+
+\begin{frame}
+\frametitle{Bibliographic resources}
+
+Getting started bibliography:
+
+\begin{description}
+\item [Easy] \customcite{scott_what_2012}
+\item [Important] \customcite{marin_social_2011}
+\item [Hard] \customcite{newman_networks_2010}
+\end{description}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Online resources}
+
+Tutorials for beginners by Katherine Ognyanova (Rutgers University):
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.1\textwidth]{figure/Ognyanova_Katherine}
+\end{figure}
+
+
+\begin{itemize}
+\item Network visualisation with Gephi (\url{kateto.net/sunbelt2016})
+\item Network visualization with R (\url{kateto.net/network-visualization})
+\item Network Analysis and Visualization with R and igraph (\url{kateto.net/networks-r-igraph})
+\end{itemize}
+
+\end{frame}
+
+\iffalse
+
+\section{Text analysis}
+
+\subsection{Another very short introduction}
+
+\begin{frame}
+\frametitle{Quantitative text analysis: Why? When?}
+
+Quantitative text analysis is necessary when the manual coding of documents in not feasible or acceptable. 
+
+When you face a large \textbf{corpus} of \textbf{documents}, you might want some methods to automatically:
+
+\begin{enumerate}
+
+\item Find patterns within the documents,
+
+\item Compare (and maybe group) documents.
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Finding patterns}
+
+A textual pattern is as simple as \texttt{dog}.
+
+\begin{itemize}
+
+\item Finding patterns doesn't involve any statistical analysis.
+
+\item But you might need to use of regular expressions (a.k.a. \enquote{regex}) if your pattern is complex.
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Finding patterns}
+
+Let's say, that you want to find in your corpus all the instances of \texttt{dog} and \texttt{cat}.
+
+\begin{description}
+
+\item<1->[You want to find] \enquote{I have two \underline{dog}s and a \underline{cat}} or \enquote{\underline{Cat}s are felines}
+
+\item<2->[But you don't want to find]  \enquote{the \underline{cat}egorization of syntactic \underline{cat}egories}
+
+\item<3-> You need a regular expression like: {\LARGE\verb=\b(cats?|dogs?)\b=} 
+
+\end{description}
+
+{\tiny (\href{https://regexr.com/3oqld}{link to interactive example})}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Comparing documents}
+
+Comparing documents involves statistical analysis and matrix algebra (while finding patterns doesn't). It usually relies on Natural-language processing (NLP), the branch of computer science that studies the human language and its interactions with the machines. 
+
+In its most primordial application, NLP treats documents as \textbf{bag-of-words}:
+\begin{itemize}
+\item  The \textit{position} of terms within the document is disregarded,
+\item What counts is the \textit{frequency} of the terms.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[<+->]
+\frametitle{Comparing documents}
+
+Let's see how we process documents in a common NLP application.
+
+\begin{enumerate}
+
+\item<1-> We remove from the documents all the stop-words;
+
+\item<2-> doc1 = "drugs hospitals doctors" \\
+doc2 = "smog pollution environment" \\
+doc3 = "doctors hospitals healthcare" \\
+doc4 = "pollution environment water" \\
+
+\item<3-> We count the frequency of each term in each document an we produce a term-document matrix
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[<+->]
+\frametitle{Comparing documents}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & doc1 & doc2 & doc3 & doc4 \\ 
+  \hline
+doctor & 1 & 0 & 1 & 0 \\ 
+  drug & 1 & 0 & 0 & 0 \\ 
+  environ & 0 & 1 & 0 & 1 \\ 
+  healthcar & 0 & 0 & 1 & 0 \\ 
+  hospit & 1 & 0 & 1 & 0 \\ 
+  pollut & 0 & 1 & 0 & 1 \\ 
+  smog & 0 & 1 & 0 & 0 \\ 
+  water & 0 & 0 & 0 & 1 \\ 
+   \hline
+\end{tabular}
+\caption{Term-document matrix. Terms were stemmed.} 
+\label{tab:example1-tf-table}
+\end{table}
+
+\end{frame}
+
+\begin{frame}[<+->]
+\frametitle{Comparing documents}
+
+
+4. We measure the ``distance'' between documents (a.k.a. cosine similarity) based on the relative frequency of terms that appear in each document.
+
+\begin{figure}
+    \includegraphics[width=0.4\textwidth]{figure/cosine}
+\caption{Cosine similarity illustrated. Credit: \autocite[112]{manning_introduction_2008}}
+\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Topic model}
+
+\textbf{Topic modelling} links documents to \textit{abstract} topics. The problem is that if the topic model allows to group documents together it does not allow to understand what a ``topic'' actually represents or means. In fact, it is probably not even correct to refer to them as topics...
+
+It is up to the researcher to manually code each topic, to assign to it a meaningful label.
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\caption{A topic model as a network: for each document-topic relation we can determine.}
+\end{figure}
+\end{column}
+\begin{column}{0.3\textwidth}
+\begin{figure}
+    \includegraphics{figure/topic_network}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+
+\end{frame}
+
+
+\subsection{Tools}
+
+\begin{frame}
+\frametitle{Tools for text analysis}
+
+\begin{itemize}
+
+\item Nvivo (\url{www.qsrinternational.com/nvivo})
+
+\item Regular Expression (\url{regexr.com})
+
+\item R (\url{www.r-project.org}) or Python (\url{www.python.org})
+
+\end{itemize}
+
+\end{frame}
+
+\subsection{Resources}
+
+\begin{frame}
+\frametitle{Resources for text analysis}
+
+\begin{description}
+
+\item [Introductory] \customcite{jockers_text_2014}
+
+\item [Introductory] \customcite{bird_natural_2009}
+
+\item [Hard] \customcite{manning_introduction_2008}
+
+\end{description}
+
+\end{frame}
+
+\fi
+
+\section{Online deliberative discourse}
+
+
+\begin{frame}
+{The Five Star Movement}
+\begin{figure}
+\begin{subfigure}[b]{.45\linewidth}
+\centering
+   \includegraphics[height=4.5cm]{/Users/francesco/Dropbox/Thesis_PhD/figure/beppegrillo}
+   \caption{(Credit: Enrico Lo Storto)}
+   \end{subfigure}\hfill
+   \begin{subfigure}[b]{.45\linewidth}
+   \centering
+   \includegraphics[height=4.5cm]{/Users/francesco/Dropbox/Thesis_PhD/figure/MoVimento_5_Stelle_logo}
+   \caption{(Source: \cite{_logo_2013})}
+   \end{subfigure}
+\end{figure}
+
+\note{Beppe Grillo is a standing-comedian who built is career on public TV and founding father of the Five Star Movemement. The movement originated from his blog and its symbol is to my knowledge the only party symbol with an internet address}
+
+\end{frame}
+
+
+\begin{frame}
+{Timeline}
+
+\begin{itemize}
+
+\item January 2005: \url{www.beppegrillo.it} launched
+
+\begin{exampleblock}{}
+  {\scriptsize ``What's politics? Nobody knows it anymore. Does it still make sense to talk of Right, and Left and centre? Maybe it makes more sense to talk of above and below. [...] In politics we don't need a leader, we are grown up people. We need a vision of the world [...].''}
+  \hspace*\fill{\scriptsize (28 January 2005)}
+\end{exampleblock}
+
+\item June 2005: First M5S Meetup
+
+\begin{exampleblock}{}
+  {\scriptsize ``I thought on how to do to give all who follow my blog the opportunity to meet to discuss, take the initiative, see each other in person. To transform a virtual discussion into an opportunity to change. I discussed with my collaborators and I decided to use MeetUp. MeetUp is a site that allows to organise in a simple way meetings among people interested in a topic.''}
+  \hspace*\fill{\scriptsize (16 July 2005)}
+\end{exampleblock}
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+{Timeline}
+
+\begin{itemize}
+\item September 2007: First \textit{Fuck Off Day} (Vaffanculo Day or V-Day)
+\item Mid-2009: Movement participation to first elections
+\item October 2009: Movement named \enquote{Five Star Movement} (M5S)
+\item February 2013: M5S won \num{25.5} percent popular vote (1st party with \num{8689168} votes)
+\item May 2014: M5S won \num{21.16} percent popular vote (2nd party with \num{5792865} votes)
+\item March 2018: M5S won \num{32.7} percent populat vote (1st party with \num{10732066} votes) and now is in the government coalition.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+{Online deliberative discourse on the GMI}
+
+I present now a discourse analysis based on natural language processing of the deliberation process for the institution of a guaranteed minimum income.
+
+The analysis explores how the discourse on the GMI took shape in the online discussion of the online community of citizen-users, and in the broader national public sphere.
+
+\end{frame}
+
+\begin{frame}
+
+I argue that
+
+\begin{enumerate}
+
+\item The online debate contributed significantly in pushing the GMI onto the public agenda and to parliamentary deliberation
+
+\item  As the idea was discussed in the commenting sections, Grillo progressively legitimised it by presenting it as \textit{economically} sound. 
+
+\item  The \textit{label} of the policy idea was appropriated by the Movement in the run-up to the general election of 2013 and it trickled down to the discourse of candidates of other parties. 
+
+\item After the general election, at least three parties, including the M5S, discussed the \enquote{citizen's income} in Parliament and bills to introduce nation-wide some sort of GMI were presented.
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+{Mapping documents in the concept space}
+
+\begin{description}
+
+\item [The problem] How to make sense of thousands of comments posted in an online forum over the years? Specifically:
+
+\end{description}
+
+\begin{enumerate}
+
+\item How comments relate one with the other, and
+\item How comments relate to meaningful \textbf{concepts}.
+
+\end{enumerate}
+
+\begin{description}
+
+\item[Solution 1] We could attempt to use a \textbf{topic model}, so to relate each \textbf{document} to a \textbf{topic} (and consequentially each comment to the other comments). But this doesn't solve the problem of topics being abstract representation and not necessarily meaningful. 
+
+\item[Solution 2] Instead, we could measure the ``distance'' separating each comments and a limited number of documents, each representing a well defined semantic \textit{concept}.
+
+\end{description}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Documents position within the concept space}
+
+\nocite{gabrilovich_computing_2007}
+
+The \textbf{concept space} can be thought of \textit{spatially}. Individual concept documents have a position within the concept space relatively to all the other concept documents, with their distance being measured based on the relative frequency of their terms. 
+
+But what can be used as concept document?
+
+\customcite{gabrilovich_computing_2007} proses to use a selection of \textit{Wikipedia articles}. 
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Documents position within the concept space}
+
+Wikipedia articles have two important characteristics:
+ 
+\begin{enumerate}
+
+\item They are precisely, concisely and meaningfully identified by their title (e.g. ``Car'', ``Leonardo da Vinci'', ``Poverty'')
+
+\item The scope of the article itself is limited to the subject of the article's title; that is, the terms used in the article are all related to the title. 
+
+\end{enumerate} 
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Define the concept space: the problem}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+Yet, there are more than 5 million articles in the English Wikipedia. How do we only select articles that can help our analysis?
+
+We can leverage the networked structure of Wikipedia: with \texttt{Categories} hierarchically linked to \texttt{Subcategories} and \texttt{Articles} linked to \texttt{Categories}.
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{figure}
+    \includegraphics{figure/wikipedia}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Define the concept space: a solution}
+
+
+
+I set nine \textit{macro}-categories: \texttt{Poverty}, \texttt{Unemployment}, \texttt{Banking}, \texttt{Income}, \texttt{Politics}, \texttt{Politics of Italy}, \texttt{Monetary economics}, \texttt{Constitution of Italy} and \texttt{Five Star Movement}.
+
+From these nine \textit{macro}-categories I queried the network for all categories with a maximum of two-degree (two hops) separation from them, obtaining a set of 540 categories.
+
+All articles not belonging to these 540 categories were removed, bringing the final number of Wikipedia articles for the concept space to 4827.
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+    \includegraphics[width=0.6\textwidth]{/Users/francesco/ownCloud/m5s_gmi/figures/desc_cat_map}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Define the concept space: a solution}
+
+Finally, the distance between each comment and the 4827 concept documents (the Wikipedia articles) forming the concept space was measured based on the frequency of terms contained by the comments and the frequency of terms contained by the Wikipedia articles. 
+
+In practice, I obtained two results:
+
+\begin{itemize}
+
+\item I could determine the importance of each concept in relation to each comment, and
+
+\item I could determine the closeness of comments.
+
+\end{itemize}
+
+These two results allowed me to infer what were the main concepts framing the debate and how these concepts changed overtime.
+
+\end{frame}
+
+
+\begin{frame}
+{Example of concepts assigned to a post}
+
+\begin{exampleblock}{}
+1) we are talking about basic income, non-guaranteed minimum income 2) and in any case with the various cuts you don't reach 30 billion per year 3) money to subsidise idleness and unproductivity? absurd and who should create jobs since companies are closing because Italy is a tax hell? the state? Another fake welfarism. 4) with both citizen's income and with GMI the general Italian mentality is fraudulent so it would cost even more than any normally budgeted calculation. 
+\end{exampleblock}
+
+\begin{exampleblock}{Concepts (Wikipedia articles)}
+Productivity; Tax wedge; Fiscal cliff; Rebirth of Christian Democracy; Profit; Government agency; Tax haven; Social stigma; Italian fiscal code card; Declaration of taxable income
+\end{exampleblock}
+
+\end{frame}
+
+
+\begin{frame}
+{The GMI public debate in Italy}
+
+\begin{figure}
+\includegraphics[width=0.6\textwidth]{figure/gmi-parl-1} \caption{Number of acts and bills presented mentioning \enquote{guaranteed minimum income}}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{figure}
+\includegraphics[width=0.6\textwidth]{figure/gmi-cor-rep-1} \caption{Number of articles mentioning \enquote{citizen's income} as fraction of articles mentioning \enquote{politics} published in the same period.}\label{fig:gmi-cor-rep}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{figure}
+\includegraphics[width=0.6\textwidth]{figure/gmi_online_freq_1} \caption{Number of postings mentioning \enquote{citizen's income} or \enquote{GMI}}\label{fig:gmi-cor-rep}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{figure}
+\includegraphics[width=0.6\textwidth]{figure/gmi_online_freq_2} \caption{Number of postings mentioning \enquote{citizen's income} or \enquote{GMI}}\label{fig:gmi-cor-rep}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+{Comparing the GMI online debate with the public debate based}
+
+\begin{columns}
+\begin{column}{0.3\textwidth}
+\textit{Weight of concepts in the discussions (lines) and frequency of interventions (heatmap)}
+\end{column}
+\begin{column}{0.7\textwidth}
+\begin{figure}
+\includegraphics[width=0.85\textwidth]{figure/cat-ts-1} 
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{columns}
+\begin{column}{0.3\textwidth}
+\textit{Users active in three selected threads: on bank seigniorage (red nodes), GMI (yellow nodes), on value added tax (blue nodes) and on both seigniorage and GMI (orange nodes). Direct links represent a comment from user to user and nodes' size are proportional to the level of activity of the corresponding user.}
+\end{column}
+\begin{column}{0.7\textwidth}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{figure/graph_gmi_period1}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\end{frame}
+
+\begin{frame}
+{2D visualisation of comments within the concept space}
+\begin{figure}
+    \includegraphics[width=0.6\textwidth]{figure/esa_1}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+{2D visualisation of comments within the concept space}
+\begin{figure}
+    \includegraphics[width=0.6\textwidth]{figure/esa_2}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+{Conclusions}
+
+\begin{enumerate}
+
+\item The online fora were able to push an item onto the agenda not against a
+set of strong alternatives but in the absence of any.
+
+\item Online deliberation by itself had a significant impact only when its discourse was endorsed by Grillo; the impact of online deliberation was mediated
+by the leadership of the Movement.
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\printbibliography
+\end{frame}
+
+
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
